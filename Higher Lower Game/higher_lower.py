@@ -10,12 +10,10 @@ def pick_entity():
 
 def check_answer(first_entity, second_entity, choice):
     """Checks the user's answer. Returns True if correct else returns False"""
-    if first_entity["follower_count"] > second_entity["follower_count"] and choice == "A":
-        return True
-    elif first_entity["follower_count"] < second_entity["follower_count"] and choice == "B":
-        return True
+    if first_entity["follower_count"] > second_entity["follower_count"]:
+        return choice == "A"
     else:
-        return False
+        return choice == "B"
 
 
 def play_game():
