@@ -1,49 +1,25 @@
 from machine_data import MENU, resources
 
 
-def check_resources(menu_item, available_resources):
-    req_water = MENU[menu_item]["ingredients"]["water"]
-    req_coffee = MENU[menu_item]["ingredients"]["coffee"]
-
-    avail_water = available_resources["water"]
-    avail_coffee = available_resources["coffee"]
-
-    if avail_water > req_water:
-        if avail_coffee > req_coffee:
-            if menu_item != "espresso":
-                req_milk = MENU[menu_item]["ingredients"]["milk"]
-                avail_milk = available_resources["milk"]
-                if avail_milk > req_milk:
-                    return True
-                else:
-                    print("Sorry there is not enough Milk")
-            else:
-                return True
-        else:
-            print("Sorry there is not enough Coffee")
+def check_resources(order_requirements):
+    """Checks if the available resources are sufficient for the ordered item"""
+    for item in order_requirements:
+        if order_requirements[item] >= resources[item]:
+            print(f"Sorry there is not enough {item}.")
             return False
-    else:
-        print("Sorry there is not enough Water")
-        return False
+    return True
 
 
-def use_resources(menu_item, available_resources):
-    req_water = MENU[menu_item]["ingredients"]["water"]
-    req_coffee = MENU[menu_item]["ingredients"]["coffee"]
-
-    available_resources["water"] -= req_water
-    available_resources["coffee"] -= req_coffee
-
-    if menu_item != "espresso":
-        req_milk = MENU[menu_item]["ingredients"]["milk"]
-        available_resources["milk"] -= req_milk
-
-    print(f"Here is your {menu_item}. Enjoy!")
-
+def use_resources(order_requirements, available_resources):
+    """Deducts the ingredients used for the order and returns the available resources."""
+    for item in order_requirements:
+        available_resources[item] -= order_requirements[item]
     return available_resources
 
 
 def use_money(quarters, dimes, nickles, pennies, menu_item):
+    """Checks if the money paid is sufficient. If it is then gives user back the change if any.
+     if it is not then refunds all the money"""
     money_required = MENU[menu_item]["cost"]
     money_paid = (quarters * 0.25) + (dimes * 0.1) + (nickles * 0.05) + (pennies * 0.01)
 
@@ -64,10 +40,10 @@ while use_coffee_machine:
     if user_input == "report":
         print(f"Water: {resources['water']}\nMilk: {resources['milk']}\nCoffee: {resources['coffee']}\n"
               f"Money: ${money_in_machine}")
-    elif user_input == "exit":
+    elif user_input == "off":
         use_coffee_machine = False
     else:
-        if check_resources(user_input, resources):
+        if check_resources(MENU[user_input]["ingredients"]):
             print("Please insert coins")
             quarter = int(input("How many quarters?: "))
             dime = int(input("How many dimes?: "))
@@ -75,6 +51,7 @@ while use_coffee_machine:
             penny = int(input("How many pennies?: "))
 
             money = use_money(quarter, dime, nickle, penny, user_input)
-            if money_in_machine != money:
+            if money != 0:
                 money_in_machine += money
-                resources = use_resources(user_input, resources)
+                resources = use_resources(MENU[user_input]["ingredients"], resources)
+                print(f"Here is your {user_input}. Enjoy!")
