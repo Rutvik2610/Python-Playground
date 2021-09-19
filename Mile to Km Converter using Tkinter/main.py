@@ -2,8 +2,8 @@ from tkinter import *
 
 
 def convert():
-    miles = int(miles_input.get())
-    km = miles * 1.6
+    miles = float(miles_input.get())
+    km = miles * 1.609
     km_output.config(text=f"{km}")
 
 
