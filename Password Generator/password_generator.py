@@ -20,6 +20,6 @@ for i in range(0,nr_numbers):
 
 random.shuffle(password)
 for char in password:
-    final_password += i
+    final_password += char
 
 print(f"Your password is: {final_password}")
