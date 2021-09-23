@@ -65,8 +65,15 @@ def save():
             except json.JSONDecodeError:
                 data = new_data
             else:
-                # Updating old data with new data
-                data.update(new_data)
+                if website in data:
+                    update = messagebox.askyesno("Warning", f"There is already a password saved for {website}.\n"
+                                                            f"Would you like to overwrite?")
+                    if update:
+                        data[website]["password"] = password
+                        data[website]["email"] = email
+                else:
+                    # Updating old data with new data
+                    data.update(new_data)
 
             finally:
                 with open("data.json", "w") as data_file:
@@ -88,23 +95,23 @@ def clear_data():
 # ---------------------------- Search data ------------------------------- #
 def search():
     website = website_entry.get()
-    email = user_entry.get()
     search_result = None
 
-    if len(website) == 0 or len(email) == 0:
+    if len(website) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty")
     else:
         try:
             with open("data.json", "r") as data_file:
                 data = json.load(data_file)
         except (FileNotFoundError, json.JSONDecodeError):
-            search_result = "Not Found"
+            search_result = f"No details for {website} exist."
         else:
             if website in data:
                 password = data[website]["password"]
+                email = data[website]["email"]
                 search_result = f"Website: {website}\nEmail: {email}\nPassword: {password}"
             else:
-                search_result = "Not Found"
+                search_result = f"No details for {website} exist."
         finally:
             messagebox.showinfo(title="Search Result", message=search_result)
 
