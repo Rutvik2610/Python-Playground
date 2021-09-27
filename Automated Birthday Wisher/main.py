@@ -3,19 +3,21 @@ import datetime as dt
 import random
 import pandas
 
-my_email = ""
+# --------------Set Email and Password---------------
+my_email = "@gmail.com"
 password = ""
 
-letter_list = ["letter_1.txt", "letter_2.txt", "letter_3.txt"]
+# --------------Check Date---------------------------
 now = dt.datetime.now()
 today = (now.month, now.day)
 
+# ----------------CSV Data Handling------------------
 data = pandas.read_csv("birthdays.csv")
 birthdays_dict = {(data_row.month, data_row.day): data_row.to_list() for (index, data_row) in data.iterrows()}
-print(birthdays_dict)
 
+# ----------------Send Mail--------------------------
 if today in birthdays_dict:
-    with open(f"letter_templates/{random.choice(letter_list)}") as mail_letter:
+    with open(f"letter_templates/letter_{random.randint(1, 3)}.txt") as mail_letter:
         birthday_letter = mail_letter.read()
         birthday_letter = birthday_letter.replace("[NAME]", f"{birthdays_dict[today][0]}")
         with smtplib.SMTP("smtp.gmail.com") as connection:
