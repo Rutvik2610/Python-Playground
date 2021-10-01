@@ -14,8 +14,15 @@ class QuizInterface:
         self.window.title("Trivia Quiz")
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
 
+        # Creating Question number label
+        self.question_number_label = Label(text=f"Question: {self.quiz.question_number}/{len(self.quiz.question_list)}",
+                                           bg=THEME_COLOR, fg="white",
+                                           font=("Ariel", 15, "bold"))
+        self.question_number_label.grid(row=0, column=0)
+
         # Creating Score label
-        self.score_label = Label(text=f"Score: {self.quiz.score}", bg=THEME_COLOR, fg="white", font=("Ariel", 15, "bold"))
+        self.score_label = Label(text=f"Score: {self.quiz.score}", bg=THEME_COLOR, fg="white",
+                                 font=("Ariel", 15, "bold"))
         self.score_label.grid(row=0, column=1)
 
         # Creating Canvas
@@ -46,6 +53,7 @@ class QuizInterface:
         self.score_label.config(text=f"Score: {self.quiz.score}")
         if self.quiz.still_has_questions():
             q_text = self.quiz.next_question()
+            self.question_number_label.config(text=f"Question: {self.quiz.question_number}/{len(self.quiz.question_list)}")
             self.canvas.itemconfig(self.question_text, text=f"{q_text}")
         else:
             self.true_button.config(state="disabled")
