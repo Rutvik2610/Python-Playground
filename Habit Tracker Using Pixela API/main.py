@@ -40,7 +40,7 @@ pixel_creation_endpoint = f"{pixela_endpoint}/{USER_NAME}/graphs/{GRAPH_ID}"
 today = datetime.now()
 pixel_config = {
     "date": today.strftime("%Y%m%d"),
-    "quantity": "2.1"
+    "quantity": input("How many kilometres did you jog today?")
 }
 response = requests.post(url=pixel_creation_endpoint, json=pixel_config, headers=headers)
 
@@ -56,6 +56,6 @@ response = requests.post(url=pixel_creation_endpoint, json=pixel_config, headers
 
 
 # To delete a pixel
-# pixel_deletion_endpoint = f"{pixela_endpoint}/{USER_NAME}/graphs/{GRAPH_ID}/{today.strftime('%Y%m%d')}"
+# pixel_deletion_endpoint = f"{pixela_endpoint}/{USER_NAME}/graphs/{GRAPH_ID}/{DATE_OF_PIXEL}"
 
 # update_response = requests.delete(url=pixel_deletion_endpoint, headers=headers)
