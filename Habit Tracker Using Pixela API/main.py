@@ -44,6 +44,7 @@ pixel_config = {
 }
 response = requests.post(url=pixel_creation_endpoint, json=pixel_config, headers=headers)
 
+
 # To update a pixel
 # pixel_updation_endpoint = f"{pixela_endpoint}/{USER_NAME}/graphs/{GRAPH_ID}/{DATE_OF_PIXEL}"
 
@@ -52,3 +53,9 @@ response = requests.post(url=pixel_creation_endpoint, json=pixel_config, headers
 # }
 # update_response = requests.put(url=pixel_updation_endpoint, json=pixel_updation_config, headers=headers)
 # print(update_response.text)
+
+
+# To delete a pixel
+# pixel_deletion_endpoint = f"{pixela_endpoint}/{USER_NAME}/graphs/{GRAPH_ID}/{today.strftime('%Y%m%d')}"
+
+# update_response = requests.delete(url=pixel_deletion_endpoint, headers=headers)
