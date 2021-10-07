@@ -7,27 +7,34 @@ TOKEN = os.environ.get("SHEETY_TOKEN")
 PROJECT_NAME = ""
 SHEET_NAME = ""
 
-print("Welcome to Rutvik's Flight Club!\nWe find the best flight deals and email you.")
-first_name = input("What is your first name?\n")
-last_name = input("What is your last name?\n")
-email = input("What is your email?\n")
-confirm_email = input("Type your email again.\n")
+should_continue = True
 
-if email == confirm_email:
-    users_headers = {
-        "Authorization": f"Bearer {TOKEN}"
-    }
+while should_continue:
+    print("Welcome to Rutvik's Flight Club!\nWe find the best flight deals and email you.")
+    first_name = input("What is your first name?\n")
+    last_name = input("What is your last name?\n")
+    email = input("What is your email?\n")
+    confirm_email = input("Type your email again.\n")
 
-    sheety_endpoint = f"https://api.sheety.co/{USERNAME}/{PROJECT_NAME}/{SHEET_NAME}"
-
-    users = {
-        "user": {
-            "firstName": first_name,
-            "lastName": last_name,
-            "email": confirm_email
+    if email == confirm_email:
+        users_headers = {
+            "Authorization": f"Bearer {TOKEN}"
         }
-    }
-    enter_response = requests.post(url=sheety_endpoint, json=users, headers=users_headers)
-    enter_response.raise_for_status()
 
-print("emails don't match")
+        sheety_endpoint = f"https://api.sheety.co/{USERNAME}/{PROJECT_NAME}/{SHEET_NAME}"
+
+        users = {
+            "user": {
+                "firstName": first_name,
+                "lastName": last_name,
+                "email": confirm_email
+            }
+        }
+        enter_response = requests.post(url=sheety_endpoint, json=users, headers=users_headers)
+        enter_response.raise_for_status()
+    else:
+        print("emails don't match")
+
+    should_exit = input("Do you want to should_exit? Yes or No.\n").lower()
+    if should_exit == "yes":
+        should_continue = False
