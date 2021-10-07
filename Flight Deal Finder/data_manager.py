@@ -5,12 +5,13 @@ import requests
 USERNAME = os.environ.get("SHEETY_USERNAME")
 TOKEN = os.environ.get("SHEETY_TOKEN")
 
+
 class DataManager:
 
     def __init__(self, project_name, sheet_name):
         self.username = USERNAME
         self.token = TOKEN
-        self.header = sheety_headers = {
+        self.header = {
             "Authorization": f"Bearer {self.token}"
         }
         self.project_name = project_name
@@ -19,9 +20,10 @@ class DataManager:
         self.sheet_data = {}
 
     def get_data(self):
-        sheet_data = requests.get(url=self.endpoint, headers=self.header)
-        sheet_data.raise_for_status()
-        return sheet_data.json()["prices"]
+        response = requests.get(url=self.endpoint, headers=self.header)
+        response.raise_for_status()
+        self.sheet_data = response.json()[f"{self.sheet_name}"]
+        return self.sheet_data
 
     def enter_data(self, city_name, lowest_price):
         prices = {
